@@ -1,0 +1,21 @@
+{
+  "name": "daily-trends",
+  "version": "1.0.0",
+  "description": "Feed for news aggregation.",
+  "engines": {
+    "node": ">= 18.12 <19"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidgj94/daily-trends.git"
+  },
+  "author": "David Gallardo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidgj94/daily-trends/issues"
+  },
+  "homepage": "https://github.com/davidgj94/daily-trends#readme"
+}
