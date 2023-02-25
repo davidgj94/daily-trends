@@ -6,6 +6,8 @@
     "node": ">= 18.12 <19"
   },
   "scripts": {
+    "docker:up": "docker-compose --file docker-compose.db.yml up -d",
+    "docker:down": "docker-compose --file docker-compose.db.yml down -v",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
