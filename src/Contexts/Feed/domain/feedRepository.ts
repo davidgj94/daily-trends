@@ -17,6 +17,6 @@ export interface FeedItemsRepository {
   getFeed(
     startDate: Date,
     endDate: Date,
-    sources: ItemSource[]
+    sources?: ItemSource[]
   ): Promise<ArrayResponse>;
 }
