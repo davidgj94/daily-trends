@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { DateTime } from "luxon";
 
 import { MongoFeedItemsRepository } from "Feed/infra/persistence/mongo/feedItemRepository";
 import { FeedItem } from "Feed/domain/feedItem";
@@ -60,5 +61,47 @@ describe("Feed mongo repository integration tests", () => {
     const findResult = await mongoRepository.findbyId(idGenerator());
     expect(findResult.isFailure()).toBe(true);
     expect(findResult.error.type === "NotFound").toBe(true);
+  });
+
+  it("returns feed Items between requested dates", async () => {
+    const feedItem1 = new FeedItem(
+      idGenerator(),
+      faker.internet.url(),
+      "elMundo",
+      [faker.internet.url()],
+      DateTime.now().startOf("day").plus({ hours: 4 }).toJSDate(),
+      faker.lorem.paragraph()
+    );
+    let saveResult = await mongoRepository.save(feedItem1);
+    expect(saveResult.isSuccess()).toBe(true);
+
+    const feedItem2 = new FeedItem(
+      idGenerator(),
+      faker.internet.url(),
+      "elPais",
+      [faker.internet.url()],
+      DateTime.now().startOf("day").plus({ hours: 6 }).toJSDate(),
+      faker.lorem.paragraph()
+    );
+    saveResult = await mongoRepository.save(feedItem2);
+    expect(saveResult.isSuccess()).toBe(true);
+
+    const feedItem3 = new FeedItem(
+      idGenerator(),
+      faker.internet.url(),
+      "elPais",
+      [faker.internet.url()],
+      DateTime.now().startOf("day").minus({ days: 1 }).toJSDate(),
+      faker.lorem.paragraph()
+    );
+    saveResult = await mongoRepository.save(feedItem3);
+    expect(saveResult.isSuccess()).toBe(true);
+
+    const getFeedResult = await mongoRepository.getFeed(
+      DateTime.now().startOf("day").toJSDate(),
+      DateTime.now().startOf("day").plus({ days: 1 }).toJSDate()
+    );
+    expect(getFeedResult.isSuccess()).toBe(true);
+    expect(getFeedResult.value).toEqual([feedItem1, feedItem2]);
   });
 });
