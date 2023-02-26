@@ -10,3 +10,7 @@ export const startDB = async () => {
     process.exit(1);
   }
 };
+
+export const closeDB = async () => {
+  mongoose.connection.close();
+};

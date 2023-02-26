@@ -18,5 +18,6 @@
       "Shared/*": ["src/Contexts/Shared/*"],
       "Feed/*": ["src/Contexts/Feed/*"]
     }
-  }
+  },
+  "exclude": ["node_modules"]
 }
