@@ -9,7 +9,7 @@ interface MongoFeedItem extends Omit<FeedItem, "id"> {
 export type MongoFeedItemDocument = HydratedDocument<MongoFeedItem>;
 
 const mongoFeedItemSchema = new Schema<MongoFeedItem>({
-  date: { type: Date, required: true },
+  date: { type: Date, required: true, index: true },
   description: { type: String, required: false },
   images: [{ type: String, required: true }],
   source: { type: String, enum: ItemSourceValues, required: true },
