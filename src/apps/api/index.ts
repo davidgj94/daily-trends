@@ -5,7 +5,7 @@ import http from "http";
 import router from "./routes";
 import config from "./config";
 import { errorHandler, notFoundMiddleware } from "./middlewares/errorHandlers";
-import { startDB } from "Shared/infra/init";
+import { startDB } from "Shared/infra/persistence/mongo/init";
 
 // Init express
 const app = express();
