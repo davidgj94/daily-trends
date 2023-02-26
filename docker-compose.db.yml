@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:4.2.10
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_DATABASE: "daily-trends"
+    volumes:
+      - mongodb_data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+
+volumes:
+  mongodb_data:

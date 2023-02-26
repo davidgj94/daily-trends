@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "lib": ["es2020"],
+    "module": "commonjs",
+    "target": "es2020",
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strict": true,
+    "strictNullChecks": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "paths": {
+      "Shared/*": ["src/Contexts/Shared/*"],
+      "Feed/*": ["src/Contexts/Feed/*"]
+    }
+  }
+}
