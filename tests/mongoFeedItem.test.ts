@@ -104,4 +104,36 @@ describe("Feed mongo repository integration tests", () => {
     expect(getFeedResult.isSuccess()).toBe(true);
     expect(getFeedResult.value).toEqual([feedItem1, feedItem2]);
   });
+
+  it("only returns feed Items from selected sources", async () => {
+    const feedItem1 = new FeedItem(
+      idGenerator(),
+      faker.internet.url(),
+      "elMundo",
+      [faker.internet.url()],
+      DateTime.now().startOf("day").plus({ hours: 4 }).toJSDate(),
+      faker.lorem.paragraph()
+    );
+    let saveResult = await mongoRepository.save(feedItem1);
+    expect(saveResult.isSuccess()).toBe(true);
+
+    const feedItem2 = new FeedItem(
+      idGenerator(),
+      faker.internet.url(),
+      "elPais",
+      [faker.internet.url()],
+      DateTime.now().startOf("day").plus({ hours: 6 }).toJSDate(),
+      faker.lorem.paragraph()
+    );
+    saveResult = await mongoRepository.save(feedItem2);
+    expect(saveResult.isSuccess()).toBe(true);
+
+    const getFeedResult = await mongoRepository.getFeed(
+      DateTime.now().startOf("day").toJSDate(),
+      DateTime.now().startOf("day").plus({ days: 1 }).toJSDate(),
+      ["elMundo"]
+    );
+    expect(getFeedResult.isSuccess()).toBe(true);
+    expect(getFeedResult.value).toEqual([feedItem1]);
+  });
 });
