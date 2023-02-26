@@ -1,0 +1,46 @@
+import mongoFeedItemModel from "./feedItem";
+import { FeedItemsRepository } from "src/Contexts/Feed/domain/feedRepository";
+import { FeedItem } from "src/Contexts/Feed/domain/feedItem";
+import {
+  NotFoundError,
+  UnexpectedError,
+} from "src/Contexts/Shared/domain/error";
+import {
+  failure,
+  Failure,
+  success,
+  Success,
+} from "src/Contexts/Shared/domain/failureOrSuccess";
+import { mongoFeedItemMapper } from "./feedItemMapper";
+
+export class MongoFeedItemsRepository implements FeedItemsRepository {
+  async findbyId(
+    id: string
+  ): Promise<
+    Failure<NotFoundError | UnexpectedError, never> | Success<never, FeedItem>
+  > {
+    try {
+      const feedItemDb = await mongoFeedItemModel.findOne({ itemId: id });
+      if (!feedItemDb) {
+        return failure(new NotFoundError(new Error("feed item not found")));
+      }
+      return success(mongoFeedItemMapper(feedItemDb));
+    } catch (error) {
+      return failure(new UnexpectedError(error as any));
+    }
+  }
+  save(
+    item: FeedItem
+  ): Promise<
+    Failure<NotFoundError | UnexpectedError, never> | Success<never, FeedItem>
+  > {
+    throw new Error("Method not implemented.");
+  }
+  getFeed(
+    date: Date
+  ): Promise<
+    Failure<NotFoundError | UnexpectedError, never> | Success<never, FeedItem[]>
+  > {
+    throw new Error("Method not implemented.");
+  }
+}
