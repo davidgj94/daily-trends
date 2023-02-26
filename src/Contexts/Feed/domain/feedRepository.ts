@@ -14,5 +14,5 @@ type ArrayResponse = FailureOrSuccess<
 export interface FeedItemsRepository {
   findbyId(id: string): Promise<Response>;
   save(item: FeedItem): Promise<Response>;
-  getFeed(date: Date): Promise<ArrayResponse>;
+  getFeed(startDate: Date, endDate: Date): Promise<ArrayResponse>;
 }

@@ -61,11 +61,29 @@ export class MongoFeedItemsRepository implements FeedItemsRepository {
       return failure(new UnexpectedError(error as any));
     }
   }
-  getFeed(
-    date: Date
+
+  async getFeed(
+    startDate: Date,
+    endDate: Date
   ): Promise<
     Failure<NotFoundError | UnexpectedError, never> | Success<never, FeedItem[]>
   > {
-    throw new Error("Method not implemented.");
+    try {
+      const feedItemsDb = await mongoFeedItemModel.find({
+        date: { $gte: startDate, $lt: endDate },
+      });
+      if (feedItemsDb.length === 0) {
+        return failure(
+          new NotFoundError(
+            new Error(
+              `feed items not found between ${startDate} and ${endDate}`
+            )
+          )
+        );
+      }
+      return success(feedItemsDb.map(mongoFeedItemMapper));
+    } catch (error) {
+      return failure(new UnexpectedError(error as any));
+    }
   }
 }
