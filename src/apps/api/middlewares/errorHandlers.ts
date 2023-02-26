@@ -4,7 +4,7 @@ import {
   BadRequestError,
   NotFoundError,
   UnexpectedError,
-} from "../../../Contexts/Shared/domain/error";
+} from "Shared/domain/error";
 
 const mapError = (error: NotFoundError | UnexpectedError | BadRequestError) => {
   switch (error.type) {

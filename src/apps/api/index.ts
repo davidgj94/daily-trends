@@ -5,7 +5,7 @@ import http from "http";
 import router from "./routes";
 import config from "./config";
 import { errorHandler, notFoundMiddleware } from "./middlewares/errorHandlers";
-import { startDB } from "../../Contexts/Shared/infra/init";
+import { startDB } from "Shared/infra/init";
 
 // Init express
 const app = express();

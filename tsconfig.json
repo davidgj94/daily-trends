@@ -13,6 +13,10 @@
     "strictNullChecks": true,
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "paths": {
+      "Shared/*": ["src/Contexts/Shared/*"],
+      "Feed/*": ["src/Contexts/Feed/*"]
+    }
   }
 }
