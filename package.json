@@ -12,7 +12,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "start": "node -r dotenv/config -r ./prod-paths.js dist/apps/api/index.js",
-    "test": "NODE_ENV=test NODE_PATH=./ node --max_old_space_size=12240 ./node_modules/jest/bin/jest.js --config tests/jest-config.json --detectOpenHandles tests"
+    "test": "NODE_ENV=test NODE_PATH=./ node --max_old_space_size=12240 ./node_modules/jest/bin/jest.js --config tests/jestConfig.js --detectOpenHandles tests"
   },
   "repository": {
     "type": "git",
