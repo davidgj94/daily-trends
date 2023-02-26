@@ -1,6 +1,6 @@
 import mongoFeedItemModel from "./feedItem";
 import { FeedItemsRepository } from "src/Contexts/Feed/domain/feedRepository";
-import { FeedItem } from "src/Contexts/Feed/domain/feedItem";
+import { FeedItem, ItemSource } from "src/Contexts/Feed/domain/feedItem";
 import {
   NotFoundError,
   UnexpectedError,
@@ -64,14 +64,24 @@ export class MongoFeedItemsRepository implements FeedItemsRepository {
 
   async getFeed(
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    sources?: ItemSource[]
   ): Promise<
     Failure<NotFoundError | UnexpectedError, never> | Success<never, FeedItem[]>
   > {
     try {
-      const feedItemsDb = await mongoFeedItemModel.find({
-        date: { $gte: startDate, $lt: endDate },
-      });
+      const dateFilter = { date: { $gte: startDate, $lt: endDate } };
+      const sourceFilter = { source: sources };
+
+      const feedItemsDb = await mongoFeedItemModel
+        .find(
+          sources?.length
+            ? {
+                $and: [dateFilter, sourceFilter],
+              }
+            : dateFilter
+        )
+        .sort({ date: "asc" });
       if (feedItemsDb.length === 0) {
         return failure(
           new NotFoundError(
