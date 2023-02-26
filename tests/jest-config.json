@@ -1,0 +1,7 @@
+{
+  "rootDir": "../",
+  "preset": "ts-jest",
+  "setupFiles": ["<rootDir>/tests/dbEnv.ts"],
+  "setupFilesAfterEnv": ["<rootDir>/tests/testHooks.ts"],
+  "moduleDirectories": ["node_modules"]
+}
