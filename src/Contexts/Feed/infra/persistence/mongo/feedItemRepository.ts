@@ -29,12 +29,37 @@ export class MongoFeedItemsRepository implements FeedItemsRepository {
       return failure(new UnexpectedError(error as any));
     }
   }
-  save(
+
+  async save(
     item: FeedItem
   ): Promise<
     Failure<NotFoundError | UnexpectedError, never> | Success<never, FeedItem>
   > {
-    throw new Error("Method not implemented.");
+    try {
+      let feedItemDb = await mongoFeedItemModel.findOne({ itemId: item.id });
+      if (!feedItemDb) {
+        feedItemDb = await mongoFeedItemModel.create({
+          date: item.date,
+          description: item.description,
+          images: item.images,
+          itemId: item.id,
+          source: item.source,
+          url: item.url,
+        });
+      } else {
+        feedItemDb.set({
+          date: item.date,
+          description: item.description,
+          images: item.images,
+          itemId: item.id,
+          source: item.source,
+          url: item.url,
+        });
+      }
+      return success(mongoFeedItemMapper(feedItemDb));
+    } catch (error) {
+      return failure(new UnexpectedError(error as any));
+    }
   }
   getFeed(
     date: Date
