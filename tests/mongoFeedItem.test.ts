@@ -17,7 +17,7 @@ describe("Feed mongo repository integration tests", () => {
       new Date(),
       faker.lorem.paragraph()
     );
-    const saveResult = await mongoRepository.save(feedItem);
+    const saveResult = await mongoRepository.create(feedItem);
     expect(saveResult.isSuccess()).toBe(true);
     const savedFeedItem = saveResult.value;
     expect(savedFeedItem).toEqual(feedItem);
@@ -32,11 +32,11 @@ describe("Feed mongo repository integration tests", () => {
       new Date(),
       faker.lorem.paragraph()
     );
-    let saveResult = await mongoRepository.save(feedItem);
+    let saveResult = await mongoRepository.create(feedItem);
     expect(saveResult.isSuccess()).toBe(true);
 
     feedItem.description = faker.lorem.paragraph();
-    saveResult = await mongoRepository.save(feedItem);
+    saveResult = await mongoRepository.create(feedItem);
     expect(saveResult.isSuccess()).toBe(true);
     expect(saveResult.value).toEqual(feedItem);
   });
@@ -50,7 +50,7 @@ describe("Feed mongo repository integration tests", () => {
       new Date(),
       faker.lorem.paragraph()
     );
-    let saveResult = await mongoRepository.save(feedItem);
+    let saveResult = await mongoRepository.create(feedItem);
     expect(saveResult.isSuccess()).toBe(true);
     const findResult = await mongoRepository.findbyId(feedItem.id);
     expect(findResult.isSuccess()).toBe(true);
@@ -72,7 +72,7 @@ describe("Feed mongo repository integration tests", () => {
       DateTime.now().startOf("day").plus({ hours: 4 }).toJSDate(),
       faker.lorem.paragraph()
     );
-    let saveResult = await mongoRepository.save(feedItem1);
+    let saveResult = await mongoRepository.create(feedItem1);
     expect(saveResult.isSuccess()).toBe(true);
 
     const feedItem2 = new FeedItem(
@@ -83,7 +83,7 @@ describe("Feed mongo repository integration tests", () => {
       DateTime.now().startOf("day").plus({ hours: 6 }).toJSDate(),
       faker.lorem.paragraph()
     );
-    saveResult = await mongoRepository.save(feedItem2);
+    saveResult = await mongoRepository.create(feedItem2);
     expect(saveResult.isSuccess()).toBe(true);
 
     const feedItem3 = new FeedItem(
@@ -94,7 +94,7 @@ describe("Feed mongo repository integration tests", () => {
       DateTime.now().startOf("day").minus({ days: 1 }).toJSDate(),
       faker.lorem.paragraph()
     );
-    saveResult = await mongoRepository.save(feedItem3);
+    saveResult = await mongoRepository.create(feedItem3);
     expect(saveResult.isSuccess()).toBe(true);
 
     const getFeedResult = await mongoRepository.getFeed(
@@ -114,7 +114,7 @@ describe("Feed mongo repository integration tests", () => {
       DateTime.now().startOf("day").plus({ hours: 4 }).toJSDate(),
       faker.lorem.paragraph()
     );
-    let saveResult = await mongoRepository.save(feedItem1);
+    let saveResult = await mongoRepository.create(feedItem1);
     expect(saveResult.isSuccess()).toBe(true);
 
     const feedItem2 = new FeedItem(
@@ -125,7 +125,7 @@ describe("Feed mongo repository integration tests", () => {
       DateTime.now().startOf("day").plus({ hours: 6 }).toJSDate(),
       faker.lorem.paragraph()
     );
-    saveResult = await mongoRepository.save(feedItem2);
+    saveResult = await mongoRepository.create(feedItem2);
     expect(saveResult.isSuccess()).toBe(true);
 
     const getFeedResult = await mongoRepository.getFeed(
