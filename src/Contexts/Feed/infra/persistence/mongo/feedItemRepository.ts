@@ -1,3 +1,5 @@
+import { shake } from "radash";
+
 import mongoFeedItemModel from "./feedItem";
 import { FeedItemsRepository } from "src/Contexts/Feed/domain/feedRepository";
 import { FeedItem, ItemSource } from "src/Contexts/Feed/domain/feedItem";
@@ -23,15 +25,17 @@ export class MongoFeedItemsRepository implements FeedItemsRepository {
     | Success<never, FeedItem>
   > {
     try {
-      const createResponse = await tryCatch(FailedWriteError, () =>
-        mongoFeedItemModel.create({
-          date: item.date,
-          description: item.description,
-          images: item.images,
-          itemId: item.id,
-          source: item.source,
-          url: item.url,
-        })
+      const createResponse = await tryCatch(
+        FailedWriteError,
+        async () =>
+          await mongoFeedItemModel.create({
+            date: item.date,
+            description: item.description,
+            images: item.images,
+            itemId: item.id,
+            source: item.source,
+            url: item.url,
+          })
       );
       if (createResponse.isFailure()) return createResponse;
       return success(mongoFeedItemMapper(createResponse.value));
@@ -41,24 +45,18 @@ export class MongoFeedItemsRepository implements FeedItemsRepository {
   }
 
   async update(
-    item: FeedItem
+    id: string,
+    updates: Partial<FeedItem>
   ): Promise<
     | Failure<NotFoundError | UnexpectedError | FailedWriteError, never>
     | Success<never, FeedItem>
   > {
     try {
-      const feedItemDb = await mongoFeedItemModel.findOne({ itemId: item.id });
+      const feedItemDb = await mongoFeedItemModel.findOne({ itemId: id });
       if (!feedItemDb) {
         return failure(new NotFoundError(new Error("feed item not found")));
       }
-      feedItemDb.set({
-        date: item.date,
-        description: item.description,
-        images: item.images,
-        itemId: item.id,
-        source: item.source,
-        url: item.url,
-      });
+      feedItemDb.set(shake(updates));
       const updateResponse = await tryCatch(
         FailedWriteError,
         async () => await feedItemDb.save()

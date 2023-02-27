@@ -13,7 +13,7 @@ const mongoFeedItemSchema = new Schema<MongoFeedItem>({
   description: { type: String, required: false },
   images: [{ type: String, required: true }],
   source: { type: String, enum: ItemSourceValues, required: true },
-  url: { type: String, required: true, unique: true },
+  url: { type: String, required: true, unique: true, index: true },
   itemId: { type: String, required: true, unique: true },
 });
 
