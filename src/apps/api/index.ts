@@ -4,7 +4,7 @@ import http from "http";
 
 import router from "./routes";
 import config from "./config";
-import { errorHandler, notFoundMiddleware } from "./middlewares/errorHandlers";
+import { notFoundMiddleware } from "./middlewares/errorHandlers";
 import { startDB } from "Shared/infra/persistence/mongo/init";
 
 // Init express
@@ -22,9 +22,6 @@ app.use("/api/v1/", router);
 
 // Catch 404 and forward to error handler
 app.use(notFoundMiddleware);
-
-// Add error handler
-app.use(errorHandler);
 
 (async () => {
   await startDB();

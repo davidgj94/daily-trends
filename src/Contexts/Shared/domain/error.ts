@@ -27,3 +27,11 @@ export class BadRequestError implements IError {
     this.message = error.message;
   }
 }
+
+export class FailedWriteError implements IError {
+  readonly type = "FailedWriteError";
+  message: string;
+  constructor(public error: Error) {
+    this.message = error.message;
+  }
+}

@@ -1,11 +1,15 @@
 import {
+  FailedWriteError,
   NotFoundError,
   UnexpectedError,
 } from "src/Contexts/Shared/domain/error";
 import { FailureOrSuccess } from "src/Contexts/Shared/domain/failureOrSuccess";
 import { FeedItem, ItemSource } from "./feedItem";
 
-type Response = FailureOrSuccess<NotFoundError | UnexpectedError, FeedItem>;
+type Response = FailureOrSuccess<
+  NotFoundError | UnexpectedError | FailedWriteError,
+  FeedItem
+>;
 type ArrayResponse = FailureOrSuccess<
   NotFoundError | UnexpectedError,
   FeedItem[]
@@ -13,7 +17,8 @@ type ArrayResponse = FailureOrSuccess<
 
 export interface FeedItemsRepository {
   findbyId(id: string): Promise<Response>;
-  save(item: FeedItem): Promise<Response>;
+  create(item: FeedItem): Promise<Response>;
+  update(id: string, updates: Partial<FeedItem>): Promise<Response>;
   getFeed(
     startDate: Date,
     endDate: Date,
