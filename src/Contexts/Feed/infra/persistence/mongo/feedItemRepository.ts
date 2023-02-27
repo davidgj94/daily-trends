@@ -2,6 +2,7 @@ import mongoFeedItemModel from "./feedItem";
 import { FeedItemsRepository } from "src/Contexts/Feed/domain/feedRepository";
 import { FeedItem, ItemSource } from "src/Contexts/Feed/domain/feedItem";
 import {
+  FailedWriteError,
   NotFoundError,
   UnexpectedError,
 } from "src/Contexts/Shared/domain/error";
@@ -12,8 +13,63 @@ import {
   Success,
 } from "src/Contexts/Shared/domain/failureOrSuccess";
 import { mongoFeedItemMapper } from "./feedItemMapper";
+import { tryCatch } from "Shared/utils/tryCatchAsync";
 
 export class MongoFeedItemsRepository implements FeedItemsRepository {
+  async create(
+    item: FeedItem
+  ): Promise<
+    | Failure<NotFoundError | UnexpectedError | FailedWriteError, never>
+    | Success<never, FeedItem>
+  > {
+    try {
+      const createResponse = await tryCatch(FailedWriteError, () =>
+        mongoFeedItemModel.create({
+          date: item.date,
+          description: item.description,
+          images: item.images,
+          itemId: item.id,
+          source: item.source,
+          url: item.url,
+        })
+      );
+      if (createResponse.isFailure()) return createResponse;
+      return success(mongoFeedItemMapper(createResponse.value));
+    } catch (error) {
+      return failure(new UnexpectedError(error as any));
+    }
+  }
+
+  async update(
+    item: FeedItem
+  ): Promise<
+    | Failure<NotFoundError | UnexpectedError | FailedWriteError, never>
+    | Success<never, FeedItem>
+  > {
+    try {
+      const feedItemDb = await mongoFeedItemModel.findOne({ itemId: item.id });
+      if (!feedItemDb) {
+        return failure(new NotFoundError(new Error("feed item not found")));
+      }
+      feedItemDb.set({
+        date: item.date,
+        description: item.description,
+        images: item.images,
+        itemId: item.id,
+        source: item.source,
+        url: item.url,
+      });
+      const updateResponse = await tryCatch(
+        FailedWriteError,
+        async () => await feedItemDb.save()
+      );
+      if (updateResponse.isFailure()) return updateResponse;
+      return success(mongoFeedItemMapper(updateResponse.value));
+    } catch (error) {
+      return failure(new UnexpectedError(error as any));
+    }
+  }
+
   async findbyId(
     id: string
   ): Promise<
@@ -23,38 +79,6 @@ export class MongoFeedItemsRepository implements FeedItemsRepository {
       const feedItemDb = await mongoFeedItemModel.findOne({ itemId: id });
       if (!feedItemDb) {
         return failure(new NotFoundError(new Error("feed item not found")));
-      }
-      return success(mongoFeedItemMapper(feedItemDb));
-    } catch (error) {
-      return failure(new UnexpectedError(error as any));
-    }
-  }
-
-  async save(
-    item: FeedItem
-  ): Promise<
-    Failure<NotFoundError | UnexpectedError, never> | Success<never, FeedItem>
-  > {
-    try {
-      let feedItemDb = await mongoFeedItemModel.findOne({ itemId: item.id });
-      if (!feedItemDb) {
-        feedItemDb = await mongoFeedItemModel.create({
-          date: item.date,
-          description: item.description,
-          images: item.images,
-          itemId: item.id,
-          source: item.source,
-          url: item.url,
-        });
-      } else {
-        feedItemDb.set({
-          date: item.date,
-          description: item.description,
-          images: item.images,
-          itemId: item.id,
-          source: item.source,
-          url: item.url,
-        });
       }
       return success(mongoFeedItemMapper(feedItemDb));
     } catch (error) {
