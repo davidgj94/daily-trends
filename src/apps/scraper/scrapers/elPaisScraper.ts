@@ -1,9 +1,14 @@
 import cheerio from "cheerio";
+import { ItemSource } from "Feed/domain/feedItem";
 import { WebScraper } from "./webScraper";
 
-const BASE_URL = "https://elpais.com/";
+const BASE_URL = "https://elpais.com";
 
 export class ElPaisScraper implements WebScraper {
+  getSource(): ItemSource {
+    return "elPais";
+  }
+
   getBaseUrl(): string {
     return BASE_URL;
   }
@@ -25,8 +30,8 @@ export class ElPaisScraper implements WebScraper {
     const $ = cheerio.load(html);
     const description = $('h1[class="a_t"]').text();
     const images = [
-      $('figure[class="a_m a_m-h"] img').attr()["srcset"].split(" ")[0],
-    ];
+      $('figure[class="a_m a_m-h"] img').attr()?.["srcset"]?.split(" ")?.[0],
+    ].filter(Boolean);
     const date = new Date($("time").attr()["datetime"]);
     return { description, images, date };
   }
