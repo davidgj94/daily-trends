@@ -4,13 +4,13 @@ import { FeedItemsRepository } from "Feed/domain/feedRepository";
 import { DateTime } from "luxon";
 import { NotFoundError, UnexpectedError } from "Shared/domain/error";
 import { FailureOrSuccess, success } from "Shared/domain/failureOrSuccess";
-import { UseCase } from "Shared/domain/useCase";
+import { AsyncUseCase } from "Shared/domain/useCase";
 
 type GetFeedRequest = { date: Date; selectedSources?: ItemSource[] };
 type GetFeedResponse = FailureOrSuccess<NotFoundError | UnexpectedError, Feed>;
 
 export class GetFeedUseCase
-  implements UseCase<GetFeedRequest, GetFeedResponse>
+  implements AsyncUseCase<GetFeedRequest, GetFeedResponse>
 {
   constructor(private feedItemsRepository: FeedItemsRepository) {}
   async execute({
