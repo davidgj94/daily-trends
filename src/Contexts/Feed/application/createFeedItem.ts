@@ -10,7 +10,7 @@ import { FailureOrSuccess, success } from "Shared/domain/failureOrSuccess";
 import { AsyncUseCase } from "Shared/domain/useCase";
 import { idGenerator } from "Shared/infra/idGenerator";
 
-type CreateItemRequest = Omit<FeedItem, "id">;
+export type CreateItemRequest = Omit<FeedItem, "id">;
 type CreateItemResponse = FailureOrSuccess<
   FailedWriteError | NotFoundError | UnexpectedError,
   string
