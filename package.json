@@ -12,7 +12,8 @@
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "start": "node -r dotenv/config -r ./prod-paths.js dist/apps/api/index.js",
-    "test": "NODE_ENV=test NODE_PATH=./ node --max_old_space_size=12240 ./node_modules/jest/bin/jest.js --config tests/jestConfig.js --detectOpenHandles tests"
+    "test": "NODE_ENV=test NODE_PATH=./ node --max_old_space_size=12240 ./node_modules/jest/bin/jest.js --config tests/jestConfig.js --detectOpenHandles tests",
+    "scraper:dev": "ts-node -r dotenv/config -r tsconfig-paths/register src/apps/scraper/index.ts"
   },
   "repository": {
     "type": "git",
