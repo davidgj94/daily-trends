@@ -5,6 +5,7 @@ import { MongoFeedItemsRepository } from "Feed/infra/persistence/mongo/feedItemR
 import { ScraperJob } from "./scraperJob";
 import { ElPaisScraper } from "./scrapers/elPaisScraper";
 import config from "./config";
+import { ElMundoScraper } from "./scrapers/elMundoScraper";
 
 const mongoFeedItemsRepository = new MongoFeedItemsRepository();
 export const createItemUseCase = new CreateFeedItemUseCase(
@@ -12,6 +13,19 @@ export const createItemUseCase = new CreateFeedItemUseCase(
 );
 
 const elPaisScraper = new ElPaisScraper();
-export const elPaisScraperJob = new ScraperJob(elPaisScraper, {
-  numPages: config.numPages,
-});
+const elMundoScraper = new ElMundoScraper();
+export const elPaisScraperJob = new ScraperJob(
+  elPaisScraper,
+  {
+    numPages: config.numPages,
+  },
+  createItemUseCase
+);
+
+export const elMundoScraperJob = new ScraperJob(
+  elMundoScraper,
+  {
+    numPages: config.numPages,
+  },
+  createItemUseCase
+);
