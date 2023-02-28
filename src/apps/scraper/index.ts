@@ -12,4 +12,5 @@ const runAllJobs = () =>
     })
     .then(closeDB);
 
-schedule("*/2 * * * *", runAllJobs);
+// Run jobs 3 times per day
+schedule("0 0,14,20 * * *", runAllJobs);
