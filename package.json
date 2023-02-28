@@ -6,8 +6,10 @@
     "node": ">= 18.12 <19"
   },
   "scripts": {
-    "docker:up": "docker-compose --file docker-compose.db.yml up -d",
-    "docker:down": "docker-compose --file docker-compose.db.yml down -v",
+    "db:up": "docker-compose --file docker-compose.db.yml up -d",
+    "db:down": "docker-compose --file docker-compose.db.yml down -v",
+    "docker:up": "docker-compose --file docker-compose.yml up -d",
+    "docker:down": "docker-compose --file docker-compose.yml down -v",
     "start:dev": "ts-node -r dotenv/config -r tsconfig-paths/register src/apps/api/index.ts",
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
