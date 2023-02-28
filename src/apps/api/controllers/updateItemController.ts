@@ -12,6 +12,9 @@ export const updateItemController: RequestHandler = async (req, res) => {
       case "FailedWriteError":
         res.status(StatusCodes.BAD_REQUEST).json(updateResponse.error.message);
         break;
+      case "NotFound":
+        res.status(StatusCodes.NOT_FOUND).json(updateResponse.error.message);
+        break;
       default:
         res
           .status(StatusCodes.INTERNAL_SERVER_ERROR)
