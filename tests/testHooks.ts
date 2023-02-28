@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
-import {
-  closeDB,
-  startDB,
-} from "src/Contexts/Shared/infra/persistence/mongo/init";
+import { closeDB, startDB } from "Shared/infra/persistence/mongo/init";
 
 const cleanDb = async () => {
   const db = mongoose.connection.db;

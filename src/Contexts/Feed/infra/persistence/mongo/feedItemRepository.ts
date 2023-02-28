@@ -1,19 +1,19 @@
 import { shake } from "radash";
 
 import mongoFeedItemModel from "./feedItem";
-import { FeedItemsRepository } from "src/Contexts/Feed/domain/feedRepository";
-import { FeedItem, ItemSource } from "src/Contexts/Feed/domain/feedItem";
+import { FeedItemsRepository } from "Feed/domain/feedRepository";
+import { FeedItem, ItemSource } from "Feed/domain/feedItem";
 import {
   FailedWriteError,
   NotFoundError,
   UnexpectedError,
-} from "src/Contexts/Shared/domain/error";
+} from "Shared/domain/error";
 import {
   failure,
   Failure,
   success,
   Success,
-} from "src/Contexts/Shared/domain/failureOrSuccess";
+} from "Shared/domain/failureOrSuccess";
 import { mongoFeedItemMapper } from "./feedItemMapper";
 import { tryCatch } from "Shared/utils/tryCatchAsync";
 
