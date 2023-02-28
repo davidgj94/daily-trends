@@ -1,5 +1,5 @@
-import { FeedItem } from "src/Contexts/Feed/domain/feedItem";
-import { PersistenceDataMapper } from "src/Contexts/Shared/infra/persistence/persistenceMapper";
+import { FeedItem } from "Feed/domain/feedItem";
+import { PersistenceDataMapper } from "Shared/infra/persistence/persistenceMapper";
 import { MongoFeedItemDocument } from "./feedItem";
 
 export const mongoFeedItemMapper: PersistenceDataMapper<

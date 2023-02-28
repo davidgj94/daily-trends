@@ -2,8 +2,8 @@ import {
   FailedWriteError,
   NotFoundError,
   UnexpectedError,
-} from "src/Contexts/Shared/domain/error";
-import { FailureOrSuccess } from "src/Contexts/Shared/domain/failureOrSuccess";
+} from "Shared/domain/error";
+import { FailureOrSuccess } from "Shared/domain/failureOrSuccess";
 import { FeedItem, ItemSource } from "./feedItem";
 
 type Response = FailureOrSuccess<
